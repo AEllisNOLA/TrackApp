@@ -17,6 +17,7 @@
 
 4) Complex navigation involves a series of nested objects.
 `
+
 const switchNavigator = createSwitchNavigator({
   // Login pages
   loginFlow: createStackNavigator({
@@ -35,6 +36,7 @@ const switchNavigator = createSwitchNavigator({
     Account: AccountScreen
   })
 })
+
 `
 
 5) Remember to `export default createAppContainer(switchNavigator)` at the end of the file.
