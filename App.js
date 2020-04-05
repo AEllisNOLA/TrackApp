@@ -9,6 +9,8 @@ import TrackCreateScreen from './src/screens/TrackCreateScreen'
 import TrackListScreen from './src/screens/TrackListScreen'
 import TrackDetailScreen from './src/screens/TrackDetailScreen'
 
+import { Provider as AuthProvider } from './src/context/AuthContext'
+
 const switchNavigator = createSwitchNavigator({
   // Login pages
   loginFlow: createStackNavigator({
@@ -29,4 +31,13 @@ const switchNavigator = createSwitchNavigator({
 })
 
 // createAppContainer takess the overarching navigator object and creates a component out of it.
-export default createAppContainer(switchNavigator)
+const App = createAppContainer(switchNavigator)
+
+// Sandwich App within AuthProvider so that everything gets access
+export default () => {
+  return (
+    <AuthProvider>
+      <App />
+    </AuthProvider>
+  )
+}
