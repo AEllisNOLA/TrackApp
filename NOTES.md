@@ -19,23 +19,32 @@
 
 `
 const switchNavigator = createSwitchNavigator({
+
   // Login pages
+
   loginFlow: createStackNavigator({
     Signup: SignupScreen,
     Signin: SigninScreen
   }),
+
   // Main App pages - TrackList, Account and TrackCreate
+
   mainFlow: createBottomTabNavigator({
+
     // TrackList link, which includes flow to TrackDetail
+
     TrackListFlow: createStackNavigator({
       TrackList: TrackListScreen,
       TrackDetail: TrackDetailScreen
     }),
+
     // TrackCreateScreen and AccountScreen to finish off the bottom nav
+    
     TrackCreate: TrackCreateScreen,
     Account: AccountScreen
   })
 })
+
 `
 
 5) Remember to `export default createAppContainer(switchNavigator)` at the end of the file.
