@@ -18,6 +18,7 @@
 4) Complex navigation involves a series of nested objects.
 
 `
+
 const switchNavigator = createSwitchNavigator({
 
   // Login pages
