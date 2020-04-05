@@ -16,8 +16,8 @@
     - A *SwitchNavigator* encompasses the entire app, starting with authentication and moving into the app. This is where we should start since it touches everything.
 
 4) Complex navigation involves a series of nested objects.
-`
 
+`
 const switchNavigator = createSwitchNavigator({
   // Login pages
   loginFlow: createStackNavigator({
@@ -36,7 +36,6 @@ const switchNavigator = createSwitchNavigator({
     Account: AccountScreen
   })
 })
-
 `
 
 5) Remember to `export default createAppContainer(switchNavigator)` at the end of the file.
