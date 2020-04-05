@@ -16,27 +16,41 @@
     - A *SwitchNavigator* encompasses the entire app, starting with authentication and moving into the app. This is where we should start since it touches everything.
 
 4) Complex navigation involves a series of nested objects.
+
 `
+
 const switchNavigator = createSwitchNavigator({
+
   // Login pages
+
   loginFlow: createStackNavigator({
     Signup: SignupScreen,
     Signin: SigninScreen
   }),
+
   // Main App pages - TrackList, Account and TrackCreate
+
   mainFlow: createBottomTabNavigator({
+
     // TrackList link, which includes flow to TrackDetail
+
     TrackListFlow: createStackNavigator({
       TrackList: TrackListScreen,
       TrackDetail: TrackDetailScreen
     }),
+
     // TrackCreateScreen and AccountScreen to finish off the bottom nav
+
     TrackCreate: TrackCreateScreen,
     Account: AccountScreen
   })
 })
+
 `
 
 5) Remember to `export default createAppContainer(switchNavigator)` at the end of the file.
 
 6) Move into each screen and create the navigation processes there by adding buttons and using the *navigation* prop.
+
+## 2. Some Quick Styling
+1) `npm install react-native-elements` for some customizable, pre-styled elements to save time on prototyping. Their documentation has all sorts of ways to customize their look.
