@@ -162,7 +162,8 @@ export default axios.create({
     - In a second terminal within *trackapp-server*, run `npx ngrok http 3000` 
     - The prior command should give an 8-hour live URL. Place that in *api/trackApp.js* As a note, you can navigate to this page within a normal browser and should receive "error: You must be logged in." or something similar. That confirms the server is running.
 
- ## 5. Sign Up 
+## 5. Sign Up 
+
 1) Import *trackApp.js* API into *AuthContext.js*.
 
 2) To start, let's attempt just to get a response from the API. The beneath code will make a request to the api and console.log a token if success and an error if failure.
@@ -206,7 +207,6 @@ Now, within *SignupScreen.js*, that error message will be in the state and you c
 
 7) Similar to step 7, we can now create the success case. First, we will be storing the token to the device, so `import {AsyncStorage} from 'react-native'` .*Note:* A new version is coming out soon, so the library will be pulled from a different source in the future.
 
-
 After the API request to sign up, save the JWT to the device, then dispatch it.
 `
 const response = await trackAppAPI.post('/signup', { email, password })
@@ -214,7 +214,41 @@ await AsyncStorage.setItem('token', response.data.token)
 dispatch({ type: 'signup', payload: response.data.token })
 `
 
-Now that a token has been created, swap the `isSignedIn: false` state for `token: null` . The presence of a token means the user is logged in. Lastly, add the 'signup' case to the *authReducer* up top remembering to set the errorMessage back to null in case a priot signup attempt by the user failed: `return { errorMessage: '', token: action.payload }`
+Now that a token has been created, swap the `isSignedIn: false` state for `token: null` . The presence of a token means the user is logged in. Lastly, add the 'signup' case to the *authReducer* up top remembering to set the errorMessage back to null in case a priot signup attempt by the user failed: `return { errorMessage: '', token: action.payload }` 
 
+ ## 6. Navigation from Outside of React
+ Navigation with React components is pretty simple. Every components wrapped in a navigator has access to the *navigation* prop. But components not rendered by a navigator do not have access to that prop. Accessing that prop from outside a navigator - such as would be the case needed to navigate within an action function - is more difficult.
 
+ The best way to deal with this is to make a navigation reference file and export a function which will get access to the navigator and can be used anywhere.
+
+ 1) Create *navigationRef.js* in the *src* directory. Add the following:
+
+ `
+ let navigator; 
+
+// nav object argument is the actual navigation prop from React Navigation
+export const setNavigator = nav => {
+
+    navigator = nav
+
+}
+ `
+
+2) Import the function in *App.js*. In the export at the bottom, add a ref prop to <App />. The `<App ref={navigator => {setNavigator(navigator)} />` . Essentially, this hooks into the component where the *navigation* prop is accessable and assigns it to the navigator variable in the helper function. It is now accessible in *navigationRef.js*
+
+3) Now a function can be written and exported that will grant navigation accessibility wherever it is needed.
+
+React Navigation's Navigator internally functions like Context. So we can dispatch an action to tell React Navigation to change its state and show a different screen.
+
+`
+export const navigate = (routeName, params) => {
+
+    navigator.dispatch(
+        NavigationActions.navigate({ routeName, params })
+    )
+
+}
+`
+
+4) Whenever you need to navigate somewhere from outside of React, `import { navigate } from '../navigationRef'` where it is needed, then call something like `navigate('trackList')` .
 
