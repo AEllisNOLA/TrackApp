@@ -141,3 +141,80 @@ export default () => {
 }
 `
 
+## 4. Axios/Server Setup
+
+1) Now that we need to reach out to our database, `npm install axios` . In *src*, make a new folder called *api* and a file to create/configure an instance of *axios* where the baseUrl is our *NGROK* forwarding address.
+
+`
+import axios from 'axios'
+
+// baseURL only lasts 8 hours witn NGROK, so change often or errors will occur.
+export default axios.create({
+
+    baseURL: 'https://1072d022.ngrok.io/'
+
+})
+`
+
+2) Steps to starting the server:
+
+    - Open *trackapp-server* and run `npm run dev` 
+    - In a second terminal within *trackapp-server*, run `npx ngrok http 3000` 
+    - The prior command should give an 8-hour live URL. Place that in *api/trackApp.js* As a note, you can navigate to this page within a normal browser and should receive "error: You must be logged in." or something similar. That confirms the server is running.
+
+ ## 5. Sign Up 
+1) Import *trackApp.js* API into *AuthContext.js*.
+
+2) To start, let's attempt just to get a response from the API. The beneath code will make a request to the api and console.log a token if success and an error if failure.
+
+`
+const signup = dispatch => {
+
+    return async ({ email, password }) => {
+        try {    
+            const response = await trackAppAPI.post('/signup', { email, password })
+            console.log(response.data)
+        } catch (err) {
+            console.log(err.message)
+        }
+    }
+
+}
+`
+
+3) Export the above action function in the action object at the bottom of *AuthContext.js*.
+
+3) Wire up the code in *SignupScreen.js*. Import the *useContext* hook from React, as well as the AuthContext with `import { Context as AuthContext } from '../context/AuthContext'` .
+
+4) In the actual *SignupScreen* component, pull the *state* and the *signup* action function from off of the *AuthContext*. Give the submit button `onPress={() => signup({ email, password })}` 
+
+5) In the app, try to sign up with a new e-mail address and an in-use email address. A token should be logged to the console for the former and an error code should show for the latter.
+
+6) Now add error handling. One way to tackle this is to add an errorMessage state property. Add that new piece of state to the export line in *AuthContext.js*.
+
+Then add `dispatch({ type: 'add_error', payload: 'Something went horribly wrong.'})` to the *catch* block within the *action function*.
+
+Finally, in the *authReducer* function up top.add: 
+`
+case 'add_error':
+
+    return {...state, errorMessage: action.payload}
+
+` 
+
+Now, within *SignupScreen.js*, that error message will be in the state and you can conditionally display it.
+
+7) Similar to step 7, we can now create the success case. First, we will be storing the token to the device, so `import {AsyncStorage} from 'react-native'` .*Note:* A new version is coming out soon, so the library will be pulled from a different source in the future.
+
+
+After the API request to sign up, save the JWT to the device, then dispatch it.
+`
+const response = await trackAppAPI.post('/signup', { email, password })
+await AsyncStorage.setItem('token', response.data.token)
+dispatch({ type: 'signup', payload: response.data.token })
+`
+
+Now that a token has been created, swap the `isSignedIn: false` state for `token: null` . The presence of a token means the user is logged in. Lastly, add the 'signup' case to the *authReducer* up top remembering to set the errorMessage back to null in case a priot signup attempt by the user failed: `return { errorMessage: '', token: action.payload }`
+
+
+
