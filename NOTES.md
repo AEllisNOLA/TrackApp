@@ -252,3 +252,5 @@ export const navigate = (routeName, params) => {
 
 4) Whenever you need to navigate somewhere from outside of React, `import { navigate } from '../navigationRef'` where it is needed, then call something like `navigate('trackList')` .
 
+ ## 7. Reusable Component Refactoring
+ This is all pretty self-explanatory. Just one note: when a reusable component is going to be displayed by a screen within the navigation, you need to `import {withNavigation} from 'react-navigation'`. Components directly by a *navigator* (in *App.js* file) are rendered directly by *React Navigation*, so each has a *navigation* prop. Child components displayed need to either pass props from the Screen component to the child, or the component should be wrapped in a `withNavigation()` function so it can have access to the *navigation* prop. So a reusable child that depends on navigation would be exported like so: `export default withNavigation(NavLink)`
