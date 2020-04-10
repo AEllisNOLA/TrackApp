@@ -20,9 +20,6 @@ const SignupScreen = ({ navigation }) => {
                 message="Already have an account? Sign in here."
                 routeName="Signin"
             />
-
-
-
         </View>
     )
 }

@@ -7,7 +7,7 @@ const authReducer = (state, action) => {
     switch (action.type) {
         case 'add_error':
             return { ...state, errorMessage: action.payload }
-        case 'signup':
+        case 'signin':
             return { errorMessage: '', token: action.payload }
         default:
             return state
@@ -22,7 +22,7 @@ const signup = dispatch => async ({ email, password }) => {
         // Take JWT response from API and store it on the device
         await AsyncStorage.setItem('token', response.data.token)
         // Dispatch action putting token in state
-        dispatch({ type: 'signup', payload: response.data.token })
+        dispatch({ type: 'signin', payload: response.data.token })
         // Navigate user to 'trackList' section of app
         navigate('TrackList')
     } catch (err) {
@@ -33,7 +33,15 @@ const signup = dispatch => async ({ email, password }) => {
 }
 
 
-const signin = dispatch => ({ email, password }) => {
+const signin = dispatch => async ({ email, password }) => {
+    try {
+        const response = await trackAppAPI.post('/signin', { email, password })
+        await AsyncStorage.setItem('token', response.data.token)
+        dispatch({ type: 'signin ', payload: response.data.token })
+        navigate('TrackList')
+    } catch (err) {
+        dispatch({ type: 'add_error', payload: 'Something went horribly wrong.' })
+    }
 
 }
 
