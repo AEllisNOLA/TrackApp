@@ -252,5 +252,27 @@ export const navigate = (routeName, params) => {
 
 4) Whenever you need to navigate somewhere from outside of React, `import { navigate } from '../navigationRef'` where it is needed, then call something like `navigate('trackList')` .
 
- ## 7. Reusable Component Refactoring
- This is all pretty self-explanatory. Just one note: when a reusable component is going to be displayed by a screen within the navigation, you need to `import {withNavigation} from 'react-navigation'`. Components directly by a *navigator* (in *App.js* file) are rendered directly by *React Navigation*, so each has a *navigation* prop. Child components displayed need to either pass props from the Screen component to the child, or the component should be wrapped in a `withNavigation()` function so it can have access to the *navigation* prop. So a reusable child that depends on navigation would be exported like so: `export default withNavigation(NavLink)`
+## 7. Reusable Component Refactoring
+
+This is all pretty self-explanatory. Just one note: when a reusable component is going to be displayed by a screen within the navigation, you need to `import {withNavigation} from 'react-navigation'` . Components directly by a *navigator* (in *App.js* file) are rendered directly by *React Navigation*, so each has a *navigation* prop. Child components displayed need to either pass props from the Screen component to the child, or the component should be wrapped in a `withNavigation()` function so it can have access to the *navigation* prop. So a reusable child that depends on navigation would be exported like so: `export default withNavigation(NavLink)` 
+
+## 8. Navigation Events
+
+There are times you will want to performing an action on navigating, such as clearing an error message.
+
+1) `import {NavigationEvents} from 'react-navigation'` 
+2) Use <NavigationEvents /> within the component's return statement. It does not display anything on the screen. Instead, you can pass it one of a few different callbacks as a prop, and it will run whenever the desired action is taken.
+
+* onWillFocus - called when you are about to navigate to the current screen.
+* onDidFocus - called upon successful navigation to the current screen.
+* onWillBlur -  called when you are about to navigate away from the current screen.
+* onDidBlur - called upon successful navigation away from the current screen.
+
+3) For this instance of clearing the error message, the component would like like:
+`
+<NavigationEvents 
+    onWillBlur={clearErrorMessage} 
+    onWillFocus={clearErrorMessage} />
+`
+
+*NOTE*: React Navigation V5's upgrade may work a little better, so look into using that in the future. V4 can be buggy.
