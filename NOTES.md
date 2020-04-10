@@ -271,8 +271,23 @@ There are times you will want to performing an action on navigating, such as cle
 3) For this instance of clearing the error message, the component would like like:
 `
 <NavigationEvents 
+
     onWillBlur={clearErrorMessage} 
     onWillFocus={clearErrorMessage} />
+
 `
 
 *NOTE*: React Navigation V5's upgrade may work a little better, so look into using that in the future. V4 can be buggy.
+
+* Another useful feature of ReactNavigation is *SafeAreaView*. It is anotherway to add margin to the top to keep items from being way too high up. There are also other props you can add to customize the arrangement.
+
+`
+return (
+        <SafeAreaView forceInset={{ top: 'always' }}>
+            <Text style={{ fontSize: 48 }}>AccountScreen</Text>
+        </SafeAreaView>
+    )
+`
+
+
+
