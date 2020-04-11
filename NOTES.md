@@ -289,5 +289,36 @@ return (
     )
 `
 
+## 9. Adding the Map
 
+1) First, `npx expo-cli install react-native-maps`. Then `import MapView from 'react-native-maps'` and render it within the component. Like images, MapView needs a height or it will not seem to appear, even though it is there.
 
+2) You can change the initial screen passing an object into the initialRegion prop. Deltas are essentially the zoom leve.
+`
+const Map = () => {
+    return <MapView 
+        style={styles.map} 
+        initialRegion={{
+            latitude: 37.33233,
+            longitude: -122.03121,
+            latitudeDelta: 0.01,
+            longitudeDelta: 0.01
+    }} />
+}
+`
+
+3) In order to draw on the map, you can import *{Polyline}* from 'react-native-maps as well. This component goes within a *MapView* and can be fed an array of coordinates to create a track.
+
+`
+<MapView 
+    style={styles.map} 
+    initialRegion={{
+        latitude: 37.33233,
+        longitude: -122.03121,
+        // Basically the zoom level.
+        latitudeDelta: 0.01,
+        longitudeDelta: 0.01
+    }}>
+        <Polyline coordinates={points} />
+</MapView>
+`
