@@ -11,6 +11,7 @@ import TrackListScreen from './src/screens/TrackListScreen'
 import TrackDetailScreen from './src/screens/TrackDetailScreen'
 
 import { Provider as AuthProvider } from './src/context/AuthContext'
+import { Provider as LocationProvider } from './src/context/LocationContext'
 import { setNavigator } from './src/navigationRef'
 
 const switchNavigator = createSwitchNavigator({
@@ -40,10 +41,13 @@ const App = createAppContainer(switchNavigator)
 // Sandwich App within AuthProvider so that everything gets access
 export default () => {
   return (
-    <AuthProvider>
-      <App ref={navigator => {
-        setNavigator(navigator)
-      }} />
-    </AuthProvider>
+    <LocationProvider>
+      <AuthProvider>
+        <App ref={navigator => {
+          setNavigator(navigator)
+        }} />
+      </AuthProvider>
+    </LocationProvider>
+
   )
 }
