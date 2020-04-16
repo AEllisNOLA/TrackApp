@@ -48,7 +48,7 @@ const signup = dispatch => async ({ email, password }) => {
     } catch (err) {
 
         // Dispatch action to update state with error message. Remember to wire it up in SignupScreen
-        dispatch({ type: 'add_error', payload: 'Something went horribly wrong.' })
+        dispatch({ type: 'add_error', payload: 'Something went horribly wrong. 1' })
     }
 }
 
@@ -60,7 +60,7 @@ const signin = dispatch => async ({ email, password }) => {
         dispatch({ type: 'signin ', payload: response.data.token })
         navigate('TrackList')
     } catch (err) {
-        dispatch({ type: 'add_error', payload: 'Something went horribly wrong.' })
+        dispatch({ type: 'add_error', payload: 'Something went horribly wrong. 2' })
     }
 
 }

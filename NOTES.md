@@ -322,3 +322,13 @@ const Map = () => {
         <Polyline coordinates={points} />
 </MapView>
 `
+
+## 10. Location
+First off, `npx expo-cli install expo-location'. By installing expo-location with expo-cli, it ensures that they have the correct matching versions. Expo Location allows for foreground or background tracking. 
+
+- Foreground only gives locations when the app is visible on screen and is easier to set up. For now, we will be doing foreground.
+
+- Background gives user location at all times (app not at forefront, device locked, etc.). This uses more battery power and is more complicated to set up. 
+
+### To ask for permission:
+
