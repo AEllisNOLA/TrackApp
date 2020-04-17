@@ -9,13 +9,13 @@ import { Context as LocationContext } from '../context/LocationContext'
 import useLocation from '../hooks/useLocation'
 
 const TrackCreateScreen = ({ isFocused }) => {
-    const { state, addLocation } = useContext(LocationContext)
+    const { state: isRecording, addLocation } = useContext(LocationContext)
 
     const callback = useCallback((location) => {
-        addLocation(location, state.isRecording)
-    }, [state.isRecording])
+        addLocation(location, isRecording)
+    }, [isRecording])
 
-    const [err] = useLocation(isFocused, callback)
+    const [err] = useLocation(isFocused || isRecording, callback)
 
 
     return (
